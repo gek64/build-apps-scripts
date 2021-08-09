@@ -10,7 +10,7 @@ Proxy=""
 ProgramName=""
 BuildAll=false
 
-BaseFolder=$(basename "$PWD")
+BaseFolder=$(go mod graph | awk '{print $1}')
 
 # 检查工具链
 function CheckToolbox() {
