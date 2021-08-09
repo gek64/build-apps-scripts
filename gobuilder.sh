@@ -10,8 +10,6 @@ Proxy=""
 ProgramName=""
 BuildAll=false
 
-BaseFolder=$(go mod graph | awk '{print $1}')
-
 # 检查工具链
 function CheckToolbox() {
   pass=true
@@ -34,7 +32,7 @@ function CheckToolbox() {
 # 获取程序名称
 function GetProgramName() {
   if [ "$ProgramName" == "" ]; then
-    ProgramName="$BaseFolder"
+    ProgramName=$(go mod graph | awk '{print $1}')
   fi
 }
 
