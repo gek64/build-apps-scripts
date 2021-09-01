@@ -33,7 +33,7 @@ function CheckToolbox() {
 function GetProgramName() {
   if [ "$ProgramName" == "" ]; then
     ProgramName=$(go mod graph | awk '{print $1}')
-    ProgramName=$(echo $ProgramName | awk '{print $1}')
+    ProgramName=$(echo "$ProgramName" | awk '{print $1}')
   fi
 }
 
