@@ -32,7 +32,7 @@ function CheckToolbox() {
 # 获取程序名称
 function GetProgramName() {
   if [ "$ProgramName" == "" ]; then
-    ProgramName=$(go mod graph | awk '{print $1}')
+    ProgramName=$(go mod graph | awk '{print $1}' | awk '{print $1}')
   fi
 }
 
