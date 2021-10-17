@@ -1,0 +1,8 @@
+#EXTM3U
+# https://kodi.wiki/view/Internet_video_and_audio_streams
+# RTSP://UserName:Password@IPAddress:RtspPort/Streaming/channels/XXYY
+# #EXTM3U 固定文件开头
+# #EXTINF:播放时间 -1代表长度不限,播放多媒体文件标题
+
+#EXTINF:-1,本地OBS直播
+rtsp://127.0.0.1:554/live
