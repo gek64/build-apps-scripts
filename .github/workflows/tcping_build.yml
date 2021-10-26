@@ -38,7 +38,9 @@ jobs:
           mv tmp/tcping/bin/* tcping/
           rm -rf tmp
 
+          ls -R -las
+
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git commit -m "$(date +"%Y.%m.%d")"
+          git commit -a
           git push -u origin master
