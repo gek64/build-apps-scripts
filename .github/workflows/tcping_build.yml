@@ -17,8 +17,10 @@ jobs:
 
       - name: Build
         run: |
+          # 删除旧的文件
           rm -rf tcping/*
 
+          # 临时目录用于编译
           mkdir -p tmp
           cd tmp || exit
 
@@ -28,16 +30,17 @@ jobs:
 
           # 下载编译脚本并编译所有支持的架构/系统对
           curl -LOJ https://github.com/gek64/build-apps-scripts/raw/main/gobuilder.sh
-          bash gobuilder.sh --os linux --arch amd64 -n tcping
+          bash gobuilder.sh -n tcping --all
 
           # 下载源代码
           cd bin || exit
           curl -LOJ https://github.com/cloverstd/tcping/archive/refs/heads/master.zip
 
-          cd ../../..
+          cd ../../.. || exit
           mv tmp/tcping/bin/* tcping/
           rm -rf tmp
 
+          # push到现有仓库
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add .
