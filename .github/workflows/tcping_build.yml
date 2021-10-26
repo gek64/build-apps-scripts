@@ -17,6 +17,11 @@ jobs:
 
       - name: Build
         run: |
+          rm -rf tcping/*
+
+          mkdir -p tmp
+          cd tmp || exit
+
           # 下载待编译源代码
           git clone https://github.com/cloverstd/tcping.git
           cd tcping || exit
@@ -26,11 +31,12 @@ jobs:
           bash gobuilder.sh --os linux --arch linux
 
           # 下载源代码
+          cd bin || exit
           curl -LOJ https://github.com/cloverstd/tcping/archive/refs/heads/master.zip
 
-          git clone https://github.com/gek64/build-apps-scripts.git
-          rm -rf build-apps-scripts/tcping/*
-          mv bin/* build-apps-scripts/tcping/
-          cd build-apps-scripts || exit
+          cd ../../..
+          mv tmp/tcping/bin/* tcping/
+          rm -rf tmp
+
           git push -f origin main
 
