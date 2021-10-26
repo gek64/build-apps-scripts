@@ -38,10 +38,8 @@ jobs:
           mv tmp/tcping/bin/* tcping/
           rm -rf tmp
 
-          ls -R -las
-
-          git config user.name "gek64"
-          git config user.email "gek64@users.noreply.github.com"
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add .
           git commit -m $(date +"%Y%m%d")
-          git push origin master
+          git push origin main
