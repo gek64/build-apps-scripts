@@ -38,5 +38,6 @@ jobs:
           mv tmp/tcping/bin/* tcping/
           rm -rf tmp
 
-          git push -f origin main
+          git commit -m "$(date +"%Y.%m.%d")"
+          git push -u origin master
 
