@@ -47,6 +47,7 @@ function Show_help() {
       -n | --name  staticName     : set static file name (only work when use --all or --os --arch)
       -h | --help                 : show help
       --all                       : build all supported OS and architecture
+      --main                      : build all supported architecture for windows macos linux and android
       --os OS --arch Architecture : specify OS and architecture
 
     Example:
@@ -95,6 +96,10 @@ function Init() {
       SpecifiedArch=$2
       shift
       ;;
+    "--main")
+      BuildMain=true
+      shift
+      ;;
     "--all")
       BuildAll=true
       shift
@@ -113,7 +118,7 @@ function Init() {
     echo -e "\033[31m指定了Arch=$SpecifiedArch,OS未指定\033[0m"
     exit 1
   elif [ "$SpecifiedOS" != "" ] && [ "$SpecifiedArch" == "" ]; then
-    echo -e "\033[31m制定了OS=$SpecifiedOS,Arch未指定\033[0m"
+    echo -e "\033[31m指定了OS=$SpecifiedOS,Arch未指定\033[0m"
     exit 1
   fi
 
@@ -148,6 +153,36 @@ function Build() {
     fi
 
     go build -v -trimpath -ldflags "-s -w" -o "$staticFile"
+    return 0
+  fi
+
+  # 编译主要的系统与系统支持的所有架构
+  if $BuildMain; then
+    OS=("windows" "linux" "darwin" "android")
+
+    for i in "${OS[@]}"; do
+      for j in "${Architecture[@]}"; do
+        export "GOOS=$i"
+        export "GOARCH=$j"
+
+        # windows
+        if [ "$i" == "windows" ]; then
+          staticFile="bin/$ProgramName-$i-$j.exe"
+        else
+          staticFile="bin/$ProgramName-$i-$j"
+        fi
+
+        # openwrt mips
+        if [ "$i" == "openwrt" ]; then
+          if [ "$j" == "mips64le" ] || [ "$j" == "mips64" ] || [ "$j" == "mipsle" ] || [ "$j" == "mips" ]; then
+            export "GOOS=linux"
+            export "GOMIPS=softfloat"
+          fi
+        fi
+
+        go build -v -trimpath -ldflags "-s -w" -o "$staticFile"
+      done
+    done
     return 0
   fi
 
