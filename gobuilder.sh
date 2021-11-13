@@ -9,6 +9,7 @@ SpecifiedArch=""
 Proxy=""
 ProgramName=""
 BuildAll=false
+BuildMain=false
 
 # 检查工具链
 function CheckToolbox() {
