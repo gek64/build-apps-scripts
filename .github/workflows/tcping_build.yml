@@ -28,9 +28,14 @@ jobs:
           git clone https://github.com/cloverstd/tcping.git
           cd tcping || exit
 
-          # 下载编译脚本并编译所有支持的架构/系统对
-          curl -LOJ https://github.com/gek64/build-apps-scripts/raw/main/gobuilder.sh
-          bash gobuilder.sh -n tcping --all
+          # 编译批量编译程序
+          git clone https://github.com/gek64/gobuilder.git
+          cd gobuilder
+          go build -v -trimpath -ldflags "-s -w" -o "${{ github.workspace }}/gobuilder_runner"
+          chmod +x "${{ github.workspace }}/gobuilder_runner"
+          cd ${{ github.workspace }}
+          # 编译所有支持的架构/系统对
+          "${{ github.workspace }}/gobuilder_runner" -main -d bin
 
           # 下载源代码
           cd bin || exit
