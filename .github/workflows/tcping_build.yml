@@ -21,31 +21,29 @@ jobs:
           rm -rf tcping/*
 
           # 临时路径
-          workspace="${{ github.workspace }}/tmp"
-          mkdir -p "$workspace"
+          mkdir -p "tmp"
           cd tmp || exit
 
           git clone https://github.com/gek64/gek.git
           git clone https://github.com/gek64/gobuilder.git
-          cd gobuilder || exit
-          go build -v -trimpath -ldflags "-s -w" -o "$workspace/gobuilder_runner"
-          chmod +x "$workspace/gobuilder_runner"
-          cd "$workspace" || exit
-
-          # 下载待编译源代码
           git clone https://github.com/cloverstd/tcping.git
-          cd tcping || exit
+          
+          
+          cd gobuilder || exit
+          go build -v -trimpath -ldflags "-s -w" -o "../gobuilder_runner"
+          chmod +x "../gobuilder_runner"
+          cd .. || exit
 
-          # 编译所有支持的架构/系统对
+
+          cd tcping || exit
           mkdir bin
-          "$workspace/gobuilder_runner" -main -d bin
+          "../gobuilder_runner" -main -d bin
 
           # 下载源代码
-          cd bin || exit
-          curl -LOJ https://github.com/cloverstd/tcping/archive/refs/heads/master.zip
-          mv "./*" "${{ github.workspace }}/tcping"
+          curl --create-dirs --output-dir bin -LOJ https://github.com/cloverstd/tcping/archive/refs/heads/master.zip
+          mv "bin/*" "../tcping"
 
-          cd "${{ github.workspace }}" || exit
+          cd .. || exit
           rm -rf tmp
 
           # push到现有仓库
