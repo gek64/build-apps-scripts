@@ -20,39 +20,37 @@ jobs:
           # 删除旧的文件
           rm -rf tcping/*
 
-          # 临时目录用于编译
-          mkdir -p tmp
+          # 临时路径
+          workspace="${{ github.workspace }}/tmp"
+          mkdir -p "$workspace"
           cd tmp || exit
+
+          git clone https://github.com/gek64/gek.git
+          git clone https://github.com/gek64/gobuilder.git
+          cd gobuilder || exit
+          go build -v -trimpath -ldflags "-s -w" -o "$workspace/gobuilder_runner"
+          chmod +x "$workspace/gobuilder_runner"
+          cd "$workspace" || exit
 
           # 下载待编译源代码
           git clone https://github.com/cloverstd/tcping.git
           cd tcping || exit
-          
-          
-          # 下载依赖
-          git clone https://github.com/gek64/gek.git
-          ln -s ${{ github.workspace }}/gek ../gek
 
-          # 编译批量编译程序
-          git clone https://github.com/gek64/gobuilder.git
-          cd gobuilder
-          go build -v -trimpath -ldflags "-s -w" -o "${{ github.workspace }}/gobuilder_runner"
-          chmod +x "${{ github.workspace }}/gobuilder_runner"
-          cd ${{ github.workspace }}
           # 编译所有支持的架构/系统对
-          "${{ github.workspace }}/gobuilder_runner" -main -d bin
+          mkdir bin
+          "$workspace/gobuilder_runner" -main -d bin
 
           # 下载源代码
           cd bin || exit
           curl -LOJ https://github.com/cloverstd/tcping/archive/refs/heads/master.zip
+          mv "./*" "${{ github.workspace }}/tcping"
 
-          cd ../../.. || exit
-          mv tmp/tcping/bin/* tcping/
+          cd "${{ github.workspace }}" || exit
           rm -rf tmp
 
           # push到现有仓库
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add -A
-          git commit -m $(date +"%Y%m%d")
-          git push origin $GITHUB_REF
+          git commit -m "$(date +"%Y%m%d")"
+          git push origin "$GITHUB_REF"
