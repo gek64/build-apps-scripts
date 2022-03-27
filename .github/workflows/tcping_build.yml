@@ -24,9 +24,9 @@ jobs:
           mkdir -p "tmp"
           cd tmp || exit
 
-          git clone https://github.com/gek64/gek.git
-          git clone https://github.com/gek64/gobuilder.git
-          git clone https://github.com/cloverstd/tcping.git
+          git clone "https://github.com/gek64/gek.git"
+          git clone "https://github.com/gek64/gobuilder.git"
+          git clone "https://github.com/cloverstd/tcping.git"
           
           cd gobuilder || exit
           go build -v -trimpath -ldflags "-s -w" -o "../gobuilder_runner"
