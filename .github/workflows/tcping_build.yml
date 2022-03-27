@@ -28,18 +28,15 @@ jobs:
           git clone https://github.com/gek64/gobuilder.git
           git clone https://github.com/cloverstd/tcping.git
           
-          
           cd gobuilder || exit
           go build -v -trimpath -ldflags "-s -w" -o "../gobuilder_runner"
           chmod +x "../gobuilder_runner"
           cd .. || exit
 
-
           cd tcping || exit
           mkdir bin
           "../gobuilder_runner" -main -d bin
 
-          # 下载源代码
           curl --create-dirs --output-dir bin -LOJ https://github.com/cloverstd/tcping/archive/refs/heads/master.zip
           mv "bin/*" "../tcping"
 
