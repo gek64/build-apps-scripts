@@ -3,29 +3,28 @@
 PROGRAM_NAME="gps-sdr-sim"
 
 function init() {
-  sudo -s
-  apt -y update
-  apt -y install build-essential
+  sudo apt -y update
+  sudo apt -y install build-essential
 
   # windows x86 x64
-  apt -y install binutils-mingw-w64
-  apt -y install gcc-mingw-w64 g++-mingw-w64
-  apt -y install gcc-mingw-w64-i686 g++-mingw-w64-i686
+  sudo apt -y install binutils-mingw-w64
+  sudo apt -y install gcc-mingw-w64 g++-mingw-w64
+  sudo apt -y install gcc-mingw-w64-i686 g++-mingw-w64-i686
   x86_64-w64-mingw32-gcc -v
   x86_64-w64-mingw32-g++ -v
   i686-w64-mingw32-gcc -v
   i686-w64-mingw32-g++ -v
 
   # linux arm64
-  apt -y install binutils-aarch64-linux-gnu
-  apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+  sudo apt -y install binutils-aarch64-linux-gnu
+  sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
   aarch64-linux-gnu-gcc -v
   aarch64-linux-gnu-g++ -v
 
   # linux x86 x64
-  apt -y install binutils-i686-linux-gnu binutils-x86-64-linux-gnu
-  apt -y install gcc-i686-linux-gnu g++-i686-linux-gnu
-  apt -y install gcc g++
+  sudo apt -y install binutils-i686-linux-gnu binutils-x86-64-linux-gnu
+  sudo apt -y install gcc-i686-linux-gnu g++-i686-linux-gnu
+  sudo apt -y install gcc g++
   i686-linux-gnu-gcc -v
   i686-linux-gnu-g++ -v
   x86_64-linux-gnu-gcc -v
