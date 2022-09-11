@@ -3,6 +3,7 @@
 PROGRAM_NAME="gps-sdr-sim"
 
 function init() {
+  sudo -s
   apt -y update
   apt -y install build-essential
 
